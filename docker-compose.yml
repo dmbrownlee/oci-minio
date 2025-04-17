@@ -1,0 +1,42 @@
+---
+version: "3.8"
+
+services:
+  minio:
+    hostname: ${COMPOSE_PROJECT_NAME}
+    domainname: ${LOCAL_DOMAIN}
+    image: minio/minio:latest
+    container_name: ${COMPOSE_PROJECT_NAME}
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command: server /data --console-address ":9001"
+    expose:
+      - "9000"
+      - "9001"
+    dns:
+      - ${NS1_IP}
+      - ${NS2_IP}
+    dns_search: ${LOCAL_DOMAIN}
+    networks:
+      net1:
+        ipv4_address: ${THIS_IP}
+
+volumes:
+  data:
+
+networks:
+  net1:
+    external: true
+    name: ${LAN_NAME}
