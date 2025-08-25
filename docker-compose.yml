@@ -5,7 +5,7 @@ services:
   minio:
     hostname: ${COMPOSE_PROJECT_NAME}
     domainname: ${LOCAL_DOMAIN}
-    image: minio/minio:latest
+    image: minio/minio:RELEASE.2025-07-23T15-54-02Z
     container_name: ${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
     ports:
