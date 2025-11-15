@@ -5,14 +5,14 @@ services:
   minio:
     hostname: ${COMPOSE_PROJECT_NAME}
     domainname: ${LOCAL_DOMAIN}
-    image: minio/minio:RELEASE.2025-07-23T15-54-02Z
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
     container_name: ${COMPOSE_PROJECT_NAME}
     restart: unless-stopped
     ports:
       - "9000:9000"
       - "9001:9001"
     volumes:
-      - /appdata/${COMPOSE_PROJECT_NAME}/data:/data
+      - minio_data:/data
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
@@ -37,3 +37,10 @@ networks:
   net1:
     external: true
     name: ${LAN_NAME}
+
+volumes:
+  minio_data:
+    driver_opts:
+      type: "nfs"
+      o: "addr=${MINIO_NFS_SERVER},nolock,rw,soft,nfsvers=4"
+      device: ":${MINIO_NFS_PATH}"
