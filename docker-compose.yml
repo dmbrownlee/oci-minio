@@ -42,5 +42,5 @@ volumes:
   minio_data:
     driver_opts:
       type: "nfs"
-      o: "addr=${MINIO_NFS_SERVER},nolock,rw,soft,nfsvers=4.2"
-      device: ":${MINIO_NFS_PATH}"
+      o: "addr=${NFS_SERVER},nolock,rw,soft,nfsvers=4.2"
+      device: ":${NFS_PATH}/${COMPOSE_PROJECT_NAME}/data"
